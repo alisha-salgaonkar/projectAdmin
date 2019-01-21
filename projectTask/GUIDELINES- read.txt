@@ -1,0 +1,23 @@
+********************************************************************************************
+GUIDELINES
+********************************************************************************************
+URL - http://localhost:8000
+Project page is displayed.
+Projects are shown if projects are added or else error msg is shown.
+
+Working:
+Create new project
+Edit new project
+Search project
+Search form
+Search user
+Add form to project
+Delete form from project
+Delete user from project
+Onclick of card, that project details are shown.
+
+Note: While adding project: initially default form, user, symbol, reminder are added
+
+Thank you
+
+

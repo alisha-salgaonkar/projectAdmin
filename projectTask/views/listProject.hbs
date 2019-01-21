@@ -1,0 +1,338 @@
+<div id="content-wrapper">
+    <div class="border-bottom mb-3">
+        <div class="container-fluid d-flex">
+            <div class="d-none d-md-inline-block flex-grow-1">
+                <h3>PROJECTS</h3>
+            </div>
+            <div class="d-none d-md-inline-block  mr-3">
+                <button type="button" class="btn custom-no-outline head-color">
+                    <i class="fa fa-refresh" aria-hidden="true"></i>
+                    Refresh</button>
+            </div>
+            <div class="d-none d-md-inline-block mr-3">
+                <div class="dropdown">
+                    <button type="button" class="btn dropdown-toggle custom-no-outline head-color" data-toggle="dropdown">
+                        <i class="fa fa-filter" aria-hidden="true"></i>
+                        Filter
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#">Link 1</a>
+                        <a class="dropdown-item" href="#">Link 2</a>
+                        <a class="dropdown-item" href="#">Link 3</a>
+                    </div>
+                </div>
+            </div>
+            <div class="d-none d-md-inline-block form-inline mr-3">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text custom-no-outline px-0 head-color" id="inputGroupPrepend">
+                            <i class="fa fa-search"></i>
+                        </span>
+                    </div>
+                    <input id="projectSearch" type="text" class="form-control custom-no-outline head-color" placeholder="Search for..." aria-label="Search"
+                        aria-describedby="basic-addon2">
+                </div>
+            </div>
+            <div class="d-none d-md-inline-block">
+                <a href="/showAddForm">
+                    <button type="button" class="btn btn-outline-primary">CREATE NEW PROJECT</button>
+                </a>
+            </div>
+        </div>
+    </div>
+    {{# if error }}
+    <div class="alert alert-danger">
+        <span>{{error}}</span>
+    </div>
+    {{/if}}
+    <div class="container-fluid live__scroll">
+        {{# if projectListData.length }}
+        <!-- Icon Cards-->
+        <div class="projectList row mb-3">
+            {{# each projectListData }}
+            <div class="projectCard col-xl-3 col-sm-6 live__scroll--box">
+                {{!--
+                <a href="/project/{{this._id}}"> --}}
+                    <div class="card mb-3" style="max-width: 18rem;">
+                        <div class="projectName card-header custom-card-head">
+                            {{this.projectName}}
+                        </div>
+                        <div class="card-body custom-card-body py-1">
+                            <div>
+                                <h3 class="card-title d-inline-block">
+                                    {{this.form.length}}
+                                </h3>
+                                <span class="card-text">Number of forms.</span>
+                            </div>
+                            <div>
+                                <h3 class="card-title d-inline-block">
+                                    {{this.user.length}}
+                                </h3>
+                                <span class="card-text">Number of users.</span>
+                            </div>
+                            <div class="panel-footer">
+                                <a href="../project/{{this._id}}">Details </a>
+                            </div>
+                        </div>
+                    </div>
+                    {{!-- </a> --}}
+                <!--card-->
+            </div>
+            <!--col-->
+
+            {{/each}}
+            <div style="padding:15px;">
+                <a href="http://localhost:8000/viewAll/1">
+                    View all projects
+                </a>
+            </div>
+        </div>
+        <!--row-->
+
+        {{else}}
+        <div class="alert alert-danger">
+            <span> No records found</span>
+        </div>
+        {{/if}}
+    </div>
+
+    <!-- /.container-fluid -->
+    {{#if err}} {{err.errMsg}} {{/if}} {{#if projectSpecificData}}
+    <div class="container-fluid">
+        <div class="card mb-3">
+            <div class="card-body ">
+                <h5 class="card-title"> {{projectSpecificData.projectName}}
+                    <a href="http://localhost:8000/editProject/{{ projectSpecificData._id }}">
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                    </a>
+                </h5>
+                <p class="mb-0" style="font-size:13px;">
+                    <b>Last updated: {{projectSpecificData.updatedAt}}</b>
+                </p>
+                <p class="font-italic mb-0" style="font-size:12px;">Created on: {{projectSpecificData.createdAt}}</p>
+                <p id="selProjDescContainer" class="selProjInfo  card-text mb-1">{{projectSpecificData.description}}</p>
+                <div class="d-block">
+                    <button id="showMore" type="button" class="btn btn-link">View More..</button>
+                    <button id="showLess" type="button" class="btn btn-link" style="display:none;">View Less</button>
+                </div>
+            </div>
+        </div>
+
+        <div style="width:70%;">
+            <ul id="innerTab" class="nav nav-pills mb-3">
+                <li>{{#if userSelected}}
+                    <a href="#pane1" data-toggle="tab">Forms</a>
+                    {{else}}
+                    <a class="active" href="#pane1" data-toggle="tab">Forms</a>
+                    {{/if}}
+                </li>
+                <li>
+                    {{#if userSelected}}
+                    <a class="active" href="#pane2" data-toggle="tab">Users</a>
+                    {{else}}
+                    <a href="#pane2" data-toggle="tab">Users</a>
+                    {{/if}}
+
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div id="pane1" class="tab-pane active">
+                    {{!-- add new form & search --}}
+                    <div class="d-flex mb-3">
+                        <div class=" flex-grow-1">
+                            <div>
+                                <button class="btn btn-outline-primar" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false"
+                                    aria-controls="multiCollapseExample2">Add new form</button>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="collapse multi-collapse" id="multiCollapseExample2">
+                                        <div class="card card-body">
+                                            <form action="/addForm" method="post">
+                                                <input type="hidden" name="projectId" id="projectId" value="{{projectSpecificData._id}}">
+                                                <div class="form-group">
+                                                    <label for="frmName">Name</label>
+                                                    <input type="text" class="form-control" name="name" placeholder="Enter form name">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="frmShape">Shape</label>
+                                                    <select class="form-control" name="shape">
+                                                        <option>Choose form</option>
+                                                        <option namevalue="rectangle">Rectangle</option>
+                                                        <option namevalue="circle">Circle</option>
+                                                        <option namevalue="triangle">Triangle</option>
+                                                        <option namevalue="square">Square</option>
+                                                        <option namevalue="polygon">Polygon</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="frmShape">Reminder</label>
+                                                    <select class="form-control" id="reminder" name="reminder">
+                                                        <option>Choose reminder</option>
+                                                        <option value="daily">Daily</option>
+                                                        <option value="weekly">Weekly</option>
+                                                        <option value="monthly">Monthly</option>
+                                                        <option value="yearly">Yearly</option>
+                                                    </select>
+                                                </div>
+                                                <button type="submit" class="btn btn-primary">Submit</button>
+                                                <button type="button" class="btn btn-light">Cancel</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {{!-- contains search --}}
+                        <div>
+                            <form class="d-none d-md-inline-block form-inline mr-3">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text custom-no-outline px-0 head-color" id="inputGroupPrepend">
+                                            <i class="fa fa-search"></i>
+                                        </span>
+                                    </div>
+                                    <input id="formSearch" type="text" class="form-control custom-no-outline head-color" placeholder="Search for..." aria-label="Search"
+                                        aria-describedby="basic-addon2">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    {{# if projectSpecificData.form.length }}
+                    <div class="d-flex mb-3">
+                        <div class="d-none d-md-inline-block  mr-3 custom-no-outline" style="padding:5px;">
+                            <input type="checkbox"> Select All
+                        </div>
+                        <div class="d-none d-md-inline-block  mr-3">
+                            <button type="button" class="btn custom-no-outline head-color">
+                                <a href="http://localhost:8000/project/{{projectListData._id}}">
+                                    <i class="fa fa-refresh" aria-hidden="true"></i>
+                                    Refresh</a>
+                            </button>
+                        </div>
+                        <div class="d-none d-md-inline-block mr-3 flex-grow-1">
+                            <div class="dropdown">
+                                <button type="button" class="btn dropdown-toggle custom-no-outline head-color" data-toggle="dropdown">
+                                    <i class="fa fa-filter" aria-hidden="true"></i>
+                                    Filter
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="#">Link 1</a>
+                                    <a class="dropdown-item" href="#">Link 2</a>
+                                    <a class="dropdown-item" href="#">Link 3</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-none d-md-inline-block">
+                            <a href="#" style="padding:5px;">View all</a>
+                        </div>
+                    </div>
+                    {{# if error }}
+                    <div class="alert alert-danger">
+                        <span>{{error}}</span>
+                    </div>
+                    {{/if}}
+
+                    <table id="formListTab" class="table table-hover">
+                        <thead style="background-color: #eef3f7">
+                            <tr>
+                                <th></th>
+                                <th>Forms</th>
+                                <th>Shape</th>
+                                <th>Reminder</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{# each projectSpecificData.form}}
+                            <tr>
+                                <th>
+                                    <input type="checkbox" />
+                                </th>
+                                <td>{{this.name}}</td>
+                                <td>{{this.shape}}</td>
+                                <td>{{this.reminder}}</td>
+                                <td>
+                                    <a href="http://localhost:8000/deleteForm/{{ this._id }}">
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                    {{else}}
+                    <div class="alert alert-danger">
+                        <span>No forms are added to this project</span>
+                    </div>
+                    {{/if}}
+
+
+
+                </div>
+
+                <div id="pane2" class="tab-pane">
+                    {{# if projectSpecificData.user.length }} {{# if error }}
+                    <div class="alert alert-danger">
+                        <span>{{error}}</span>
+                    </div>
+                    {{/if}} {{# if userSelected }}
+                    <div class="alert alert-success">
+                        <span>User successfully deleted</span>
+                    </div>
+                    {{/if}}
+
+                    <div>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text custom-no-outline px-0 head-color" id="inputGroupPrepend">
+                                    <i class="fa fa-search"></i>
+                                </span>
+                            </div>
+                            <input id="userSearch" type="text" class="form-control custom-no-outline head-color" placeholder="Search for..." aria-label="Search"
+                                aria-describedby="basic-addon2">
+                        </div>
+                    </div>
+                    <table id="userListTab" class="table" style="width:670px;">
+                        <thead>
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Age</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{# each projectSpecificData.user}}
+                            <tr>
+                                <td>
+                                    <input type="checkbox">
+                                </td>
+                                <td>{{this.fname}} {{this.lname}}</td>
+                                <td>{{this.age}}</td>
+                                <td>
+                                    <a href="http://localhost:8000/deleteUser/{{ this._id }}">
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                    {{else}}
+
+                    <div class="alert alert-danger">
+                        <span>No users are added to this project</span>
+                    </div>
+                    {{/if}}
+                </div>
+
+            </div>
+            <!-- /.tab-content -->
+        </div>
+        {{/if}}
+    </div>
+</div>
+<!-- /.content-wrapper -->

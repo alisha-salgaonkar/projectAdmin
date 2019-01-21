@@ -1,0 +1,35 @@
+<div style="width:600px;margin-left:auto;margin-right:auto;">
+    <h2>EDIT PROJECT</h2>
+    {{# if error }}
+    <div class="alert alert-danger">
+        <span>{{error}}</span>
+    </div>
+    {{/if}} {{# if success}}
+    <div class="alert alert-success">
+        <span>Project is successfully updated.</span>
+    </div>
+    {{/if}}
+
+    <form action="/updateProject" method="post" class="mb-3">
+        <input type="hidden" name="projectId" value="{{projectData._id}}">
+        <div class="form-group">
+            <input type="text" name="projName" required="required" class="form-control" id="projName" placeholder="Enter project name"
+                value="{{projectData.projectName}}">
+        </div>
+        <div class="form-group">
+            <textarea class="form-control" required="required" type="text" rows="5" id="projDescription" minlength="100" maxlength="250"
+                name="projDescription">{{projectData.description}}</textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Update</button>
+        <a href="/">
+            <button type="button" class="btn btn-primary">Cancel</button>
+        </a>
+    </form>
+    {{# if editFormError }}
+    <div class="alert alert-danger">
+        {{# each editFormError }}
+        <p>{{ this.msg }}</p>
+        {{/each}}
+    </div>
+    {{/if}}
+</div>

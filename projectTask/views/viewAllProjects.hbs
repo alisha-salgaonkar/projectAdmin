@@ -1,0 +1,40 @@
+<div class="container-fluid live__scroll">
+    <h5>Project list</h5>
+    {{# if projectListData.length }}
+    <!-- Icon Cards-->
+    <div class="projectList row mb-3">
+        {{# each projectListData }}
+        <div class="projectCard col-xl-3 col-sm-6 live__scroll--box">
+            {{!--
+            <a href="/project/{{this._id}}"> --}}
+                <div class="card mb-3" style="max-width: 18rem;">
+                    <div class="projectName card-header custom-card-head">
+                        {{this.projectName}}
+                    </div>
+                    <div class="card-body custom-card-body py-1">
+                        <div>
+                            <h3 class="card-title d-inline-block">
+                                {{this.form.length}}
+                            </h3>
+                            <span class="card-text">Number of forms.</span>
+                        </div>
+                        <div>
+                            <h3 class="card-title d-inline-block">
+                                {{this.user.length}}
+                            </h3>
+                            <span class="card-text">Number of users.</span>
+                        </div>
+                        <div class="panel-footer">
+                            <a href="../project/{{this._id}}">Details </a>
+                        </div>
+                    </div>
+                </div>
+                {{!-- </a> --}}
+            <!--card-->
+        </div>
+        <!--col-->
+
+        {{/each}}
+    </div>
+    {{/if}}
+</div>
